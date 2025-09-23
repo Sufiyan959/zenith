@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Crop Yield Prediction</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+  <div class="container mt-5 p-4 shadow rounded bg-light">
+    <h2 class="text-center mb-4">🌾 Crop Yield Prediction</h2>
+    <form action="/yield-predict" method="post">
+
+      <div class="mb-3">
+        <label class="form-label">State</label>
+        <input type="text" name="State" class="form-control" placeholder="Enter state" required>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">District</label>
+        <input type="text" name="District" class="form-control" placeholder="Enter district" required>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Crop</label>
+        <input type="text" name="Crop" class="form-control" placeholder="Enter crop name" required>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Crop Year</label>
+        <input type="number" name="Crop_Year" class="form-control" placeholder="Enter year (e.g., 2024)" required>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Season</label>
+        <select name="Season" class="form-select" required>
+          <option value="Kharif">Kharif</option>
+          <option value="Rabi">Rabi</option>
+          <option value="Whole Year">Whole Year</option>
+          <option value="Summer">Summer</option>
+          <option value="Winter">Winter</option>
+          <option value="Autumn">Autumn</option>
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Area (in hectares)</label>
+        <input type="number" step="0.01" name="Area" class="form-control" placeholder="e.g., 120.50" required>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Production (in tonnes)</label>
+        <input type="number" step="0.01" name="Production" class="form-control" placeholder="e.g., 300.75" required>
+      </div>
+
+      <div class="text-center">
+        <button type="submit" class="btn btn-success px-4">Predict Yield</button>
+      </div>
+    </form>
+
+    {% if prediction_text %}
+      <div class="alert alert-info text-center mt-4">
+        <h4>{{ prediction_text }}</h4>
+      </div>
+    {% endif %}
+  </div>
+</body>
+</html>

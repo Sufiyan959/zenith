@@ -1,0 +1,349 @@
+  {% extends "index.html" %}
+{% block content %}
+
+<div class="container" style="padding-top: 85px;">
+    <div class="header-section">
+        <h1>Fertilizer Recommendation</h1>
+        <p>Using your soil composition data and the crop type, we can find the best fertilizer for better yield.</p>
+    </div>
+
+    <div class="form-container">
+        <div class="row g-0">
+            <div class="col-lg-5">
+                <div class="form-image">
+                    <div class="form-image-content">
+                        <i class="fas fa-tint"></i>
+                        <h3>Optimal Fertilizer Solutions</h3>
+                        <p>Our AI analyzes soil conditions and crop requirements to recommend the perfect fertilizer blend.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-7">
+                <div class="form-content">
+                    <h3 class="form-title">Enter Soil & Crop Details</h3>
+                    <form action="/fertilizer-recommend" method="POST">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="temperature" class="form-label">
+                                        <i class="fas fa-thermometer-half"></i> Soil Temperature
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">°C</span>
+                                        <input type="number" class="form-control" id="temperature" name="temperature" min="0" step="any" required placeholder="Enter soil temperature">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="humidity" class="form-label">
+                                        <i class="fas fa-tint"></i> Soil Humidity
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">%</span>
+                                        <input type="number" class="form-control" id="humidity" name="humidity" min="0" step="any" required placeholder="Enter soil humidity">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="moisture" class="form-label">
+                                        <i class="fas fa-water"></i> Soil Moisture
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">%</span>
+                                        <input type="number" class="form-control" id="moisture" name="moisture" min="0" step="any" required placeholder="Enter soil moisture">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="N" class="form-label">
+                                        <i class="fas fa-flask"></i> Nitrogen (N)
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">ppm</span>
+                                        <input type="number" class="form-control" id="N" name="N" min="0" required placeholder="Enter nitrogen content">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="P" class="form-label">
+                                        <i class="fas fa-atom"></i> Phosphorus (P)
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">ppm</span>
+                                        <input type="number" class="form-control" id="P" name="P" min="0" required placeholder="Enter phosphorus content">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="K" class="form-label">
+                                        <i class="fas fa-bolt"></i> Potassium (K)
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">ppm</span>
+                                        <input type="number" class="form-control" id="K" name="K" min="0" required placeholder="Enter potassium content">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="soil" class="form-label">
+                                        <i class="fas fa-mountain"></i> Soil Type
+                                    </label>
+                                    <select name="soil" class="form-control" required>
+                                        <option value="" disabled selected>Select soil type</option>
+                                        {% for soil in soil_types %}
+                                        <option value="{{soil}}">{{soil}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="crop" class="form-label">
+                                        <i class="fas fa-seedling"></i> Crop Type
+                                    </label>
+                                    <select name="crop" class="form-control" required>
+                                        <option value="" disabled selected>Select crop type</option>
+                                        {% for crop in Crop_types %}
+                                        <option value="{{crop}}">{{crop}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="info-note">
+                            <i class="fas fa-info-circle"></i> 
+                            <strong>Note:</strong> Please provide accurate measurements for the best fertilizer recommendations. All fields are required.
+                        </div>
+                        
+                        <button type="submit" class="btn btn-submit">
+                            <i class="fas fa-chart-line"></i> Get Recommendation
+                        </button>
+                    </form>
+  {% if prediction_text %}
+    <h3 class="mt-4">{{ prediction_text }}</h3>
+  {% endif %}
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 15px;
+    }
+
+    .header-section {
+        text-align: center;
+        margin-bottom: 40px;
+        padding-top: 10px;
+    }
+
+    .header-section h1 {
+        color: #2e7d32;
+        font-weight: 700;
+        font-size: 2.5rem;
+        margin-bottom: 15px;
+        position: relative;
+        display: inline-block;
+    }
+
+    .header-section h1:after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 4px;
+        background: linear-gradient(to right, #4caf50, #8bc34a);
+        border-radius: 2px;
+    }
+
+    .header-section p {
+        color: #555;
+        font-size: 1.1rem;
+        max-width: 700px;
+        margin: 0 auto;
+    }
+
+    .form-container {
+        background-color: white;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        overflow: hidden;
+        margin-bottom: 40px;
+    }
+
+    .form-image {
+    background: linear-gradient(135deg, rgba(44, 62, 80, 0.4) 0%, rgba(52, 73, 94, 0.3) 100%), url('../static/images/image\ copy.png');
+    background-size: cover;
+    background-position: center;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    padding: 30px;
+    position: relative;
+}
+
+.form-image-content {
+    text-align: center;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+    z-index: 2;
+}
+
+.form-image-content i {
+    font-size: 4rem;
+    margin-bottom: 20px;
+    opacity: 0.9;
+    
+}
+
+.form-image-content h3 {
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+    font-weight: 600;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.form-image-content p {
+    font-size: 1rem;
+    opacity: 0.95;
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.7);
+    font-weight: 500;
+}
+  
+
+
+    .form-content {
+        padding: 40px;
+    }
+
+    .form-title {
+        color: #2e7d32;
+        font-weight: 600;
+        margin-bottom: 30px;
+        font-size: 1.8rem;
+        text-align: center;
+    }
+
+    .form-group {
+        margin-bottom: 25px;
+    }
+
+    .form-label {
+        font-weight: 500;
+        color: #444;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+    }
+
+    .form-label i {
+        margin-right: 10px;
+        color: #4caf50;
+    }
+
+    .form-control {
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        padding: 12px 15px;
+        font-size: 1rem;
+        transition: all 0.3s;
+    }
+
+    .form-control:focus {
+        border-color: #4caf50;
+        box-shadow: 0 0 0 0.2rem rgba(76, 175, 80, 0.25);
+    }
+
+    .input-group-text {
+        background-color: #e8f5e9;
+        border: 2px solid #e0e0e0;
+        border-right: none;
+        color: #2e7d32;
+        font-weight: 500;
+    }
+
+    .btn-submit {
+        background: linear-gradient(to right, #4caf50, #2e7d32);
+        border: none;
+        color: white;
+        padding: 15px 15px 15px 15px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        border-radius: 50px;
+        transition: all 0.3s;
+        display: block;
+        margin: 30px auto 0;
+        width: 200px;
+        box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+    }
+
+    .btn-submit:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+    }
+
+    .info-note {
+        background-color: #e8f5e9;
+        border-left: 4px solid #4caf50;
+        padding: 15px;
+        border-radius: 4px;
+        margin-top: 20px;
+        font-size: 0.9rem;
+    }
+
+    .info-note i {
+        color: #2e7d32;
+        margin-right: 8px;
+    }
+
+    @media (max-width: 992px) {
+        .form-image {
+            height: 250px;
+        }
+        
+        .form-content {
+            padding: 30px 25px;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .header-section h1 {
+            font-size: 2rem;
+        }
+        
+        .form-content {
+            padding: 25px 20px;
+        }
+        
+        .btn-submit {
+            width: 100%;
+        }
+    }
+</style>
+
+{% endblock %}

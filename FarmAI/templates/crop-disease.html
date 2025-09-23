@@ -1,0 +1,333 @@
+{% extends "index.html" %}
+{% block content %}
+
+<div class="container" style="padding-top: 85px;">
+    <div class="header-section">
+        <h1>Crop Disease Detection</h1>
+        <p>Our AI-powered models provide an easy, fast, and efficient way to detect diseases in your plants with high accuracy.</p>
+    </div>
+
+    <div class="form-container">
+        <div class="row g-0">
+            <div class="col-lg-5">
+                <div class="form-image">
+                    <div class="form-image-content">
+                        <i class="fas fa-microscope"></i>
+                        <h3>Advanced Plant Health Analysis</h3>
+                        <p>Upload images of your crops to detect diseases early and take preventive measures.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-7">
+                <div class="form-content">
+                    <h3 class="form-title">Upload Plant Image</h3>
+                    <form action="{{ url_for('find_crop_disease')}}" method="POST" enctype="multipart/form-data">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="crop" class="form-label">
+                                        <i class="fas fa-seedling"></i> Select Crop Type
+                                    </label>
+                                    <select name="crop" class="form-control" required>
+                                        <option value="" disabled selected>Choose a crop type</option>
+                                        {% for crop in crops %}
+                                        <option value="{{crop}}">{{crop}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="formFile" class="form-label">
+                                        <i class="fas fa-cloud-upload-alt"></i> Upload Plant Image
+                                    </label>
+                                    <div class="file-upload-container">
+                                        <input class="form-control" name="file" type="file" id="formFile" 
+                                               onchange="preview_image(event)" required 
+                                               accept="image/*">
+                                        <small class="form-text text-muted">Supported formats: JPG, PNG, JPEG</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="image-preview-container text-center">
+                                    <img id="output-image" class="img-preview" 
+                                         src="{{ url_for('send_file', filename=file_name) if file_name else './static/images/upload.jpg' }}"
+                                         alt="Image preview"
+                                         onerror="this.src='./static/images/upload.jpg'">
+                                    <p id="file-name" class="file-name-text">{{ file_name if file_name else 'No image selected' }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="info-note">
+                            <i class="fas fa-lightbulb"></i> 
+                            <strong>Tips for best results:</strong> 
+                            <ul class="mt-2 mb-0">
+                                <li>Take clear, well-lit photos of affected leaves</li>
+                                <li>Ensure the plant occupies most of the frame</li>
+                                <li>Avoid blurry or dark images</li>
+                                <li>Focus on the specific area showing symptoms</li>
+                            </ul>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-submit">
+                            <i class="fas fa-search"></i> Analyze for Diseases
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 15px;
+    }
+
+    .header-section {
+        text-align: center;
+        margin-bottom: 40px;
+        padding-top: 10px;
+    }
+
+    .header-section h1 {
+        color: #2e7d32;
+        font-weight: 700;
+        font-size: 2.5rem;
+        margin-bottom: 15px;
+        position: relative;
+        display: inline-block;
+    }
+
+    .header-section h1:after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 4px;
+        background: linear-gradient(to right, #4caf50, #8bc34a);
+        border-radius: 2px;
+    }
+
+    .header-section p {
+        color: #555;
+        font-size: 1.1rem;
+        max-width: 700px;
+        margin: 0 auto;
+    }
+
+    .form-container {
+        background-color: white;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        overflow: hidden;
+        margin-bottom: 40px;
+    }
+
+    .form-image {
+        background: linear-gradient(135deg, rgba(44, 62, 80, 0.4) 0%, rgba(52, 73, 94, 0.3) 100%), url('../static/images/disease.jpg');
+        background-size: cover;
+        background-position: center;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        padding: 30px;
+        position: relative;
+    }
+
+    .form-image-content {
+        text-align: center;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+        position: relative;
+        z-index: 2;
+    }
+
+    .form-image-content i {
+        font-size: 4rem;
+        margin-bottom: 20px;
+        opacity: 0.9;
+        filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+    }
+
+    .form-image-content h3 {
+        font-size: 1.8rem;
+        margin-bottom: 15px;
+        font-weight: 600;
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+    }
+
+    .form-image-content p {
+        font-size: 1rem;
+        opacity: 0.95;
+        text-shadow: 0 2px 6px rgba(0, 0, 0, 0.7);
+        font-weight: 500;
+    }
+
+    .form-content {
+        padding: 40px;
+    }
+
+    .form-title {
+        color: #2e7d32;
+        font-weight: 600;
+        margin-bottom: 30px;
+        font-size: 1.8rem;
+        text-align: center;
+    }
+
+    .form-group {
+        margin-bottom: 25px;
+    }
+
+    .form-label {
+        font-weight: 500;
+        color: #444;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+    }
+
+    .form-label i {
+        margin-right: 10px;
+        color: #4caf50;
+    }
+
+    .form-control {
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        padding: 12px 15px;
+        font-size: 1rem;
+        transition: all 0.3s;
+    }
+
+    .form-control:focus {
+        border-color: #4caf50;
+        box-shadow: 0 0 0 0.2rem rgba(76, 175, 80, 0.25);
+    }
+
+    .file-upload-container {
+        margin-bottom: 10px;
+    }
+
+    .image-preview-container {
+        margin: 25px 0;
+        padding: 20px;
+        border: 2px dashed #e0e0e0;
+        border-radius: 10px;
+        background-color: #fafafa;
+    }
+
+    .img-preview {
+        max-width: 100%;
+        max-height: 300px;
+        border-radius: 8px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .file-name-text {
+        margin-top: 10px;
+        font-style: italic;
+        color: #666;
+        font-size: 0.9rem;
+    }
+
+    .btn-submit {
+        background: linear-gradient(to right, #4caf50, #2e7d32);
+        border: none;
+        color: white;
+        padding: 12px 30px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        border-radius: 50px;
+        transition: all 0.3s;
+        display: block;
+        margin: 30px auto 0;
+        width: 250px;
+        box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+    }
+
+    .btn-submit:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+    }
+
+    .info-note {
+        background-color: #e8f5e9;
+        border-left: 4px solid #4caf50;
+        padding: 20px;
+        border-radius: 8px;
+        margin-top: 25px;
+        font-size: 0.9rem;
+    }
+
+    .info-note i {
+        color: #2e7d32;
+        margin-right: 8px;
+    }
+
+    .info-note ul {
+        padding-left: 20px;
+        margin-bottom: 0;
+    }
+
+    .info-note li {
+        margin-bottom: 5px;
+    }
+
+    @media (max-width: 992px) {
+        .form-image {
+            height: 250px;
+        }
+        
+        .form-content {
+            padding: 30px 25px;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .header-section h1 {
+            font-size: 2rem;
+        }
+        
+        .form-content {
+            padding: 25px 20px;
+        }
+        
+        .btn-submit {
+            width: 100%;
+        }
+        
+        .img-preview {
+            max-height: 200px;
+        }
+    }
+</style>
+
+<script type="text/javascript">
+    function preview_image(event) {
+        var reader = new FileReader();
+        reader.onload = function() {
+            var output = document.getElementById('output-image');
+            var fileName = document.getElementById('file-name');
+            output.src = reader.result;
+            fileName.textContent = event.target.files[0].name;
+        }
+        reader.readAsDataURL(event.target.files[0]);
+    }
+</script>
+
+{% endblock %}

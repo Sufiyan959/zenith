@@ -1,0 +1,2098 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgriGo - AI Powered Agriculture</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kaushan+Script&family=Poppins:wght@100;400;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <style>
+        /* Embedded CSS to fix access issues */
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+            padding-top: 85px;
+        }
+
+        /* Enhanced Professional Navbar - Keeping your dark color scheme */
+        .navbar {
+            padding: 0.8rem 2rem;
+            background: linear-gradient(135deg, #212529 0%, #2c3034 100%) !important;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            font-weight: 700;
+        }
+
+        .brand-text {
+            font-size: 28px;
+            font-family: 'Kaushan Script', cursive;
+            color: #fff;
+            margin-left: 12px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+
+        .logo-icon {
+            font-size: 32px;
+            color: #4cd964;
+            filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.3));
+            transition: all 0.3s ease;
+        }
+
+        .navbar-brand:hover .logo-icon {
+            transform: rotate(15deg) scale(1.1);
+        }
+
+        .navbar-nav {
+            align-items: center;
+        }
+
+        .navbar-nav .nav-item {
+            margin: 0 0.4rem;
+        }
+
+        .navbar-nav .nav-link {
+            color: rgba(255, 255, 255, 0.85) !important;
+            font-weight: 500;
+            padding: 0.6rem 1rem;
+            transition: all 0.3s ease;
+            border-radius: 6px;
+            position: relative;
+            font-size: 1.05rem;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: #fff !important;
+            background-color: rgba(255, 255, 255, 0.12);
+            transform: translateY(-2px);
+        }
+
+        .navbar-nav .nav-link.active {
+            color: #fff !important;
+            background-color: rgba(255, 255, 255, 0.1);
+            font-weight: 600;
+        }
+
+        .navbar-nav .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 50%;
+            width: 0;
+            height: 3px;
+            background: #4cd964;
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+
+        .navbar-nav .nav-link:hover::after,
+        .navbar-nav .nav-link.active::after {
+            width: 70%;
+        }
+
+        .navbar-toggler {
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            padding: 0.35rem 0.6rem;
+        }
+
+        .navbar-toggler:focus {
+            box-shadow: 0 0 0 3px rgba(76, 217, 100, 0.25);
+        }
+
+        /* Enhanced Sign In Button */
+        .btn-sign-in {
+            background: linear-gradient(135deg, #4cd964 0%, #3cb653 100%);
+            border: 2px solid #4cd964;
+            color: white !important;
+            font-weight: 600;
+            padding: 0.6rem 1.8rem;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(76, 217, 100, 0.3);
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-sign-in:hover {
+            background: linear-gradient(135deg, #3cb653 0%, #2e9e47 100%);
+            border-color: #3cb653;
+            color: white !important;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(76, 217, 100, 0.4);
+        }
+
+        .sign-in-li {
+            margin-left: 1rem;
+        }
+
+        /* Enhanced Hero Section */
+     #hero {
+    background: linear-gradient(rgba(0, 100, 0, 0.3), rgba(0, 100, 0, 0.3)),
+                url('/static/images/bg2.jpg') no-repeat center center/cover;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 2rem;
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+        #hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 50% 50%, rgba(46, 125, 50, 0.3) 0%, transparent 80%);
+            opacity: 0.5;
+        }
+
+        .hero-content {
+            max-width: 1000px;
+            z-index: 2;
+            position: relative;
+        }
+
+        .hero-text h1 {
+            font-size: 5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            font-family: 'Kaushan Script', cursive;
+            text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.3);
+            line-height: 1.1;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        .hero-text h1 span {
+            color: #4cd964;
+        }
+
+        .hero-tagline {
+            font-size: 1.8rem;
+            font-weight: 400;
+            margin-bottom: 2.5rem;
+            color: rgba(255, 255, 255, 0.95);
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+            animation: fadeInUp 1s ease-out 0.3s both;
+        }
+
+        .hero-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 2rem;
+            animation: fadeInUp 1s ease-out 0.6s both;
+        }
+
+        .hero-buttons .btn {
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-block;
+            font-size: 1.1rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #4cd964 0%, #3cb653 100%);
+            color: white;
+            border: 2px solid #4cd964;
+            box-shadow: 0 4px 12px rgba(76, 217, 100, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #3cb653 0%, #2e9e47 100%);
+            border-color: #3cb653;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(76, 217, 100, 0.4);
+            color: white;
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(5px);
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(255, 255, 255, 0.2);
+            color: white;
+            border-color: white;
+        }
+
+        /* Stats Counter (namespaced to hero) */
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-top: 4rem;
+            flex-wrap: wrap;
+            animation: fadeInUp 1s ease-out 0.9s both;
+        }
+
+        .hero-stats .stat-item {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(12px);
+            padding: 25px;
+            border-radius: 15px;
+            min-width: 160px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .hero-stats .stat-item:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .hero-stats .stat-number {
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: #4cd964;
+            margin-bottom: 8px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .hero-stats .stat-label {
+            font-size: 1.1rem;
+            color: white;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        /* Scroll Indicator */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+            z-index: 2;
+        }
+
+        .scroll-indicator span {
+            display: block;
+            width: 30px;
+            height: 30px;
+            border-bottom: 3px solid #4cd964;
+            border-right: 3px solid #4cd964;
+            transform: rotate(45deg);
+            margin: -10px;
+            animation: scroll 2s infinite;
+        }
+
+        .scroll-indicator span:nth-child(2) {
+            animation-delay: -0.2s;
+        }
+
+        .scroll-indicator span:nth-child(3) {
+            animation-delay: -0.4s;
+        }
+
+        /* Carousel Section */
+
+/* Carousel Section Styles */
+.carousel-section {
+    padding: 80px 0;
+    background: linear-gradient(to bottom, #f8f9fa 0%, #e9ecef 100%);
+}
+
+.section-title {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.section-title h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #2e7d32;
+    margin-bottom: 15px;
+    font-family: 'Kaushan Script', cursive;
+}
+
+.section-title p {
+    font-size: 1.2rem;
+    color: #555;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Carousel Container */
+#farmCarousel {
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    background: white;
+    position: relative;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.carousel-inner {
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+/* Consistent Slide Layout */
+.carousel-item {
+    height: 500px;
+    transition: transform 0.6s ease-in-out;
+}
+
+.carousel-content {
+    display: flex;
+    height: 100%;
+    width: 100%;
+}
+
+/* Image Section - Consistent for all slides */
+.carousel-image {
+    flex: 1;
+    overflow: hidden;
+    position: relative;
+}
+
+.carousel-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.carousel-item:hover .carousel-image img {
+    transform: scale(1.05);
+}
+
+/* Text Content Section - Consistent for all slides */
+.carousel-text {
+    flex: 1;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: white;
+}
+
+.carousel-icon {
+    font-size: 2.5rem;
+    color: #4cd964;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.carousel-text h3 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #2e7d32;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.carousel-text p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: #555;
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+.testimonial-author {
+    text-align: center;
+    border-top: 1px solid #e9ecef;
+    padding-top: 20px;
+}
+
+.testimonial-author h4 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #2e7d32;
+    margin-bottom: 5px;
+}
+
+.testimonial-author p {
+    font-size: 1rem;
+    color: #777;
+    margin-bottom: 0;
+}
+
+/* Quote Slide */
+.quote-slide {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  background: linear-gradient(135deg, #91e872 0%, #4ebe66 100%);
+}
+
+.quote-card {
+  display: flex;
+  flex-direction: row;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  max-width: 900px;
+  overflow: hidden;
+}
+
+/* Image Section */
+.quote-image img {
+  width: 300px;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Text Section */
+.quote-text {
+  padding: 25px;
+  flex: 1;
+  text-align: left;
+}
+
+.quote-icon {
+  font-size: 2.5rem;
+  color: #4cd964;
+  opacity: 0.8;
+  margin-bottom: 15px;
+}
+
+.quote-text h3 {
+  color: #2e7d32;
+  font-family: 'Kaushan Script', cursive;
+  margin-bottom: 15px;
+}
+
+blockquote {
+  font-style: italic;
+  font-size: 1.2rem;
+  color: #444;
+  line-height: 1.6;
+  margin: 0 0 20px;
+}
+
+.quote-author p {
+  font-weight: 600;
+  color: #2e7d32;
+  margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .quote-card {
+    flex-direction: column;
+  }
+
+  .quote-image img {
+    width: 100%;
+    height: 200px;
+  }
+}
+
+/* Weather Slide */
+.weather-slide {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  background: linear-gradient(to bottom, #d9f8e5, #ffffff);
+}
+
+.weather-card {
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  width: 100%;
+  max-width: 420px;
+  overflow: hidden;
+  text-align: center;
+}
+
+/* Banner image */
+.weather-banner img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+}
+
+/* Header: location + icon */
+.weather-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 15px 20px;
+}
+
+.location {
+  display: flex;
+  align-items: center;
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: #2e7d32;
+}
+
+.location i {
+  margin-right: 8px;
+  color: #4cd964;
+}
+
+.main-icon {
+  font-size: 3rem;
+  color: #FFD700;
+}
+
+/* Temperature */
+.temperature {
+  font-size: 3rem;
+  font-weight: 700;
+  margin: 10px 0;
+  color: #2e7d32;
+}
+
+.condition {
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: #555;
+  margin-bottom: 20px;
+}
+
+/* Stats */
+.weather-stats {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 20px;
+}
+
+.stat {
+  background: #f1f9f2;
+  padding: 12px 18px;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #2e7d32;
+}
+
+.stat i {
+  font-size: 1.2rem;
+  color: #4cd964;
+}
+
+/* Recommendation */
+.recommendation {
+  background: #e8f5e8;
+  border-left: 4px solid #4cd964;
+  padding: 15px;
+  margin: 0 20px 20px;
+  border-radius: 10px;
+  text-align: left;
+}
+
+.recommendation h4 {
+  margin: 0 0 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #2e7d32;
+}
+
+.recommendation p {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #333;
+  line-height: 1.4;
+}
+
+
+/* Future Slide */
+.future-slide {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 50px 20px;
+  background: linear-gradient(to right, #1a2a3a, #2c3e50);
+}
+
+.future-card {
+  display: flex;
+  flex-direction: row;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  max-width: 1000px;
+  width: 100%;
+}
+
+/* Image */
+.future-image img {
+  width: 400px;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Content */
+.future-text {
+  flex: 1;
+  padding: 30px;
+  color: #333;
+}
+
+.future-icon {
+  font-size: 2.8rem;
+  color: #4cd964;
+  margin-bottom: 15px;
+}
+
+.future-text h3 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 15px;
+  color: #2e7d32;
+}
+
+.future-text p {
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 25px;
+  color: #444;
+}
+
+/* Features */
+.future-features {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+.feature-item {
+  flex: 1;
+  background: #f1f9f2;
+  padding: 15px 12px;
+  border-radius: 12px;
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.feature-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+}
+
+.feature-item i {
+  font-size: 1.8rem;
+  color: #4cd964;
+  margin-bottom: 8px;
+}
+
+.feature-item span {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #2e7d32;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .future-card {
+    flex-direction: column;
+  }
+
+  .future-image img {
+    width: 100%;
+    height: 250px;
+  }
+
+  .future-features {
+    flex-direction: column;
+    gap: 12px;
+  }
+}
+
+/* Custom Carousel Controls */
+.custom-carousel-controls {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 20px;
+    transform: translateY(-50%);
+    z-index: 10;
+}
+
+.custom-carousel-control {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: rgba(76, 217, 100, 0.8);
+    border: none;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.custom-carousel-control:hover {
+    background: #2e7d32;
+    transform: scale(1.1);
+}
+
+
+
+/* Carousel Indicators */
+.carousel-indicators {
+    bottom: 20px;
+    margin: 0;
+}
+
+.carousel-indicators button {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.5);
+    margin: 0 5px;
+    border: 2px solid transparent;
+}
+
+.carousel-indicators .active {
+    background-color: #4cd964;
+    border-color: white;
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+    .carousel-content {
+        flex-direction: column;
+    }
+    
+    .carousel-item {
+        height: auto;
+        min-height: 600px;
+    }
+    
+    .carousel-image {
+        height: 250px;
+    }
+    
+    .weather-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .future-features {
+        flex-direction: column;
+        gap: 15px;
+    }
+}
+
+@media (max-width: 768px) {
+    .carousel-section {
+        padding: 60px 0;
+    }
+    
+    .section-title h2 {
+        font-size: 2rem;
+    }
+    
+    .section-title p {
+        font-size: 1.1rem;
+    }
+    
+    .carousel-text {
+        padding: 20px;
+    }
+    
+    .carousel-text h3 {
+        font-size: 1.5rem;
+    }
+    
+    .carousel-text p {
+        font-size: 1rem;
+    }
+    
+    .temperature {
+        font-size: 2.8rem;
+    }
+    
+    .weather-stats {
+        grid-template-columns: 1fr;
+    }
+    
+    .custom-carousel-control {
+        width: 40px;
+        height: 40px;
+    }
+}
+
+@media (max-width: 576px) {
+    .carousel-text {
+        padding: 15px;
+    }
+    
+    .carousel-icon {
+        font-size: 2rem;
+    }
+    
+    .carousel-text h3 {
+        font-size: 1.3rem;
+    }
+    
+    .temperature {
+        font-size: 2.5rem;
+    }
+    
+    .weather-condition {
+        font-size: 1.1rem;
+    }
+    
+    .carousel-indicators {
+        bottom: 10px;
+    }
+    
+    .carousel-indicators button {
+        width: 10px;
+        height: 10px;
+    }
+}
+
+       /* Features Section Styles */
+#features {
+    width: 100%;
+    padding: 100px 0;
+    background: linear-gradient(to bottom, #ffffff 0%, #f8f9fa 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+#features::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100" opacity="0.05"><path d="M10,10 L90,10 L90,90 L10,90 Z" fill="none" stroke="%232e7d32" stroke-width="2"/></svg>');
+    pointer-events: none;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 70px;
+}
+
+.subtitle {
+    font-size: 18px;
+    color: #4cd964;
+    font-weight: 600;
+    letter-spacing: 2px;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    position: relative;
+    display: inline-block;
+}
+
+.subtitle::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 3px;
+    background: linear-gradient(to right, #4cd964, #2e7d32);
+    border-radius: 3px;
+}
+
+.title {
+    font-size: 42px;
+    font-weight: 700;
+    color: #2e7d32;
+    margin-bottom: 15px;
+    font-family: 'Kaushan Script', cursive;
+}
+
+.description {
+    font-size: 18px;
+    color: #555;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+.features-container {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 50px;
+}
+
+.features-content {
+    flex: 1;
+    min-width: 300px;
+}
+
+.feature-card {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 40px;
+    padding: 25px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.feature-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 5px;
+    height: 0;
+    background: linear-gradient(to bottom, #4cd964, #2e7d32);
+    transition: height 0.3s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+}
+
+.feature-card:hover::before {
+    height: 100%;
+}
+
+.feature-icon {
+    width: 70px;
+    height: 70px;
+    background: linear-gradient(135deg, #4cd964 0%, #2e7d32 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 25px;
+    flex-shrink: 0;
+    box-shadow: 0 10px 20px rgba(76, 217, 100, 0.25);
+}
+
+.feature-icon i {
+    font-size: 28px;
+    color: white;
+}
+
+.feature-info {
+    flex: 1;
+}
+
+.feature-info h3 {
+    font-size: 22px;
+    font-weight: 600;
+    color: #2e7d32;
+    margin-bottom: 12px;
+}
+
+.feature-info p {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #555;
+    margin: 0;
+}
+
+.features-visual {
+    flex: 1;
+    min-width: 300px;
+    position: relative;
+}
+
+.visual-container {
+    position: relative;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.feature-image {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 0.5s ease;
+}
+
+.visual-container:hover .feature-image {
+    transform: scale(1.05);
+}
+
+.visual-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, rgba(46, 125, 50, 0.9) 0%, transparent 100%);
+    padding: 30px;
+    display: flex;
+    justify-content: space-around;
+    color: white;
+}
+
+.stat-item {
+    text-align: center;
+}
+
+.stat-item h4 {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 5px;
+    color: white;
+}
+
+.stat-item p {
+    font-size: 14px;
+    opacity: 0.9;
+    margin: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+    .features-container {
+        flex-direction: column;
+        gap: 40px;
+    }
+    
+    .features-content, .features-visual {
+        width: 100%;
+    }
+    
+    .visual-overlay {
+        padding: 20px;
+    }
+    
+    .stat-item h4 {
+        font-size: 24px;
+    }
+}
+
+@media (max-width: 768px) {
+    #features {
+        padding: 70px 0;
+    }
+    
+    .title {
+        font-size: 32px;
+    }
+    
+    .description {
+        font-size: 16px;
+    }
+    
+    .feature-card {
+        flex-direction: column;
+        text-align: center;
+        padding: 20px;
+    }
+    
+    .feature-icon {
+        margin-right: 0;
+        margin-bottom: 20px;
+    }
+    
+    .visual-overlay {
+        flex-direction: column;
+        gap: 15px;
+        padding: 15px;
+    }
+}
+
+@media (max-width: 576px) {
+    .section-header {
+        margin-bottom: 50px;
+    }
+    
+    .title {
+        font-size: 28px;
+    }
+    
+    .subtitle {
+        font-size: 16px;
+    }
+    
+    .feature-icon {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .feature-icon i {
+        font-size: 24px;
+    }
+    
+    .feature-info h3 {
+        font-size: 20px;
+    }
+    
+    .feature-info p {
+        font-size: 15px;
+    }
+}
+
+/* Animation */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.feature-card {
+    animation: fadeInUp 0.6s ease forwards;
+}
+
+.feature-card:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.feature-card:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.feature-card:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+.feature-card:nth-child(4) {
+    animation-delay: 0.4s;
+}
+
+.visual-container {
+    animation: fadeInUp 0.6s ease 0.5s forwards;
+    opacity: 0;
+}
+
+
+        /* Enhanced Services Section */
+#services {
+    width: 100%;
+    padding: 70px 0;
+    background: linear-gradient(to bottom, #f8f9fa 0%, #e9ecef 100%);
+}
+
+.title-text {
+    text-align: center;
+    padding-bottom: 70px;
+	 font-size: 42px;
+    font-weight: 700;
+    color: #2e7d32;
+    margin-bottom: 15px;
+    font-family: 'Kaushan Script', cursive;
+}
+
+.title-text p {
+    margin: auto;
+    font-size: 20px;
+    color: #8CE17D;
+    font-weight: bold;
+    position: relative;
+    z-index: 1;
+    display: inline-block;
+}
+
+.title-text p::after {
+    content: '';
+    width: 50px;
+    height: 35px;
+    background: linear-gradient(#019587, #fff);
+    position: absolute;
+    top: -20px;
+    left: 0;
+    z-index: -1;
+    transform: rotate(10deg);
+    border-top-left-radius: 35px;
+    border-bottom-right-radius: 35px; 
+}
+
+.title-text h1 {
+    font-size: 40px;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 15px;
+}
+
+.service-box {
+    width: 90%;
+    margin: auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    justify-content: center;
+}
+
+.single-service {
+    background: white;
+    padding: 25px;
+    margin-bottom: 30px;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow: hidden;
+    border: 1px solid #e9ecef;
+}
+
+.single-service::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: linear-gradient(90deg, #4cd964, #3cb653);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+}
+
+.single-service:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.single-service:hover::before {
+    transform: scaleX(1);
+}
+
+.service-icon {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.service-icon i {
+    font-size: 50px;
+    color: #4cd964;
+    background: linear-gradient(135deg, #4cd964, #3cb653);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    transition: all 0.3s ease;
+}
+
+.single-service:hover .service-icon i {
+    transform: scale(1.2);
+}
+
+.service-content {
+    display: flex;
+    align-items: center;
+    margin: 20px 0;
+}
+
+.service-content img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.single-service:hover .service-content img {
+    transform: scale(1.05);
+}
+
+.single-service h1 {
+    font-size: 22px;
+    color: #2e7d32;
+    margin: 15px 0;
+    text-align: center;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.single-service:hover h1 {
+    color: #4cd964;
+}
+
+.single-service p {
+    font-size: 14px;
+    color: #555;
+    line-height: 1.6;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.single-service a {
+    text-decoration: none;
+    display: block;
+    text-align: center;
+    color: #4cd964;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.single-service a:hover {
+    color: #3cb653;
+}
+
+
+
+/* Mobile Responsiveness for Services */
+@media screen and (max-width: 768px) {
+    .service-box {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .single-service {
+        margin-bottom: 20px;
+    }
+    
+    .service-content img {
+        height: 180px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .service-box {
+        width: 95%;
+    }
+    
+    .single-service {
+        padding: 20px;
+    }
+    
+    .service-icon i {
+        font-size: 40px;
+    }
+    
+    .single-service h1 {
+        font-size: 20px;
+    }
+}
+
+#contact {
+    padding: 60px 0 20px;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.1), #3b4638), url('/static/images/bg.jpg');
+    background-size: cover;
+    background-position: center;
+    color: #fff;
+}
+
+.footer-row {
+    width: 80%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    padding-bottom: 20px;
+}
+
+.footer-title-text h1 {
+    text-align: center;
+    color: #fff;
+    padding-bottom: 70px;
+}
+
+.footer-right .footer-left {
+    flex-basis: 45%;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+.footer-right h1 {
+    font-family: 'Kaushan Script', cursive;
+}
+
+.footer-left h1 {
+    font-family: 'Kaushan Script', cursive;
+}
+
+.footer-right {
+    text-align: right;
+}
+
+.footer-right a {
+    text-align: right;
+    color: #fff;
+    text-decoration: none;
+}
+
+.footer-row h1 {
+    color: #fff;
+    margin: 5px 0;
+}
+
+.footer-row p {
+    line-height: 35px;
+    color: #fff;
+}
+
+        /* Keyframes */
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInDown {
+            0% {
+                opacity: 0;
+                transform: translateY(-40px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateX(-50%) translateY(0);
+            }
+            40% {
+                transform: translateX(-50%) translateY(-15px);
+            }
+            60% {
+                transform: translateX(-50%) translateY(-8px);
+            }
+        }
+
+        @keyframes scroll {
+            0% {
+                opacity: 0;
+            }
+            50% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+                transform: rotate(45deg) translate(-10px, -10px);
+            }
+        }
+
+        /* Mobile responsiveness */
+        @media screen and (max-width: 1200px) {
+            .navbar {
+                padding: 0.7rem 1.5rem;
+            }
+            
+            .navbar-nav .nav-item {
+                margin: 0.2rem 0;
+            }
+            
+            .navbar-nav .nav-link {
+                text-align: center;
+            }
+            
+            .sign-in-li {
+                margin-left: 0;
+                margin-top: 0.5rem;
+            }
+
+            .hero-text h1 {
+                font-size: 4rem;
+            }
+        }
+
+        @media screen and (max-width: 991px) {
+            .navbar-collapse {
+                background: linear-gradient(135deg, #212529 0%, #2c3034 100%);
+                padding: 1.5rem;
+                border-radius: 0 0 12px 12px;
+                margin-top: 0.5rem;
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            }
+            
+            .navbar-nav .nav-link::after {
+                display: none;
+            }
+            
+            .btn-sign-in {
+                display: block;
+                text-align: center;
+                margin: 0.5rem auto;
+                width: 80%;
+            }
+
+            .hero-text h1 {
+                font-size: 3.5rem;
+            }
+
+            .hero-tagline {
+                font-size: 1.5rem;
+            }
+
+            .quote-card, .future-card {
+                flex-direction: column;
+            }
+
+            .quote-image, .future-image {
+                min-height: 250px;
+            }
+        }
+
+        @media screen and (max-width: 768px) {
+            .hero-text h1 {
+                font-size: 3rem;
+            }
+
+            .hero-tagline {
+                font-size: 1.3rem;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .hero-stats {
+                gap: 1.5rem;
+            }
+
+            .hero-stats .stat-item {
+                min-width: 120px;
+                padding: 15px;
+            }
+
+            .hero-stats .stat-number {
+                font-size: 2.2rem;
+            }
+
+            .weather-stats {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .features-container {
+                flex-direction: column;
+            }
+        }
+
+        @media screen and (max-width: 576px) {
+            .hero-text h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-tagline {
+                font-size: 1.1rem;
+            }
+
+            .section-title h2, .title, .title-text h1, .footer-title-text h1 {
+                font-size: 2rem;
+            }
+
+            .feature-card {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .feature-icon {
+                margin-right: 0;
+                margin-bottom: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Enhanced Blue Navbar -->
+  <nav class="navbar navbar-expand-xl navbar-dark bg-dark fixed-top">
+    <div class="container-fluid">
+        <!-- Logo and Brand Name -->
+        <a class="navbar-brand" href="#">
+            <i class="fas fa-seedling logo-icon"></i>
+            <span class="brand-text">FarmAI</span>
+        </a>
+
+        <!-- Navbar Toggler for Mobile -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
+                data-bs-target="#navbarNav" aria-controls="navbarNav" 
+                aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Navbar Links -->
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                <a class="nav-link {% if active_page == 'home' %}active{% endif %}" href="{{ url_for('index') }}">Home</a>
+                </li>
+                <li class="nav-item">
+                             <a class="nav-link" href="#feature">Features</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if active_page == 'services' %}active{% endif %}" href="#services">Services</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if active_page == 'leaderboard' %}active{% endif %}" href="{{ url_for('leaderboard') }}">Leaderboard</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if active_page == 'about' %}active{% endif %}" href="{{ url_for('about') }}">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if active_page == 'contact' %}active{% endif %}" href="{{ url_for('contact') }}">Contact Us</a>
+                </li>
+                <!-- Sign In Button -->
+                <li class="nav-item sign-in-li">
+                    <a class="btn btn-sign-in" href="{{ url_for('signin') }}">Sign In</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- JavaScript to handle active state -->
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const navLinks = document.querySelectorAll(".nav-link");
+
+    navLinks.forEach(link => {
+        link.addEventListener("click", function() {
+            navLinks.forEach(l => l.classList.remove("active"));
+            this.classList.add("active");
+        });
+    });
+});
+</script>
+
+
+    {% block content %}
+
+    <!-- Hero Section -->
+    <section id="hero">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1>Farm<span>AI</span></h1>
+                <p class="hero-tagline">Maximize your harvest with AI-powered insights</p>
+                <div class="hero-buttons">
+                    <a href="#services" class="btn btn-primary">Our Services</a>
+                    <a href="#feature" class="btn btn-secondary">Learn More</a>
+                </div>
+            </div>
+            
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <div class="stat-number" data-count="5000">0</div>
+                    <div class="stat-label">Happy Farmers</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" data-count="98">0</div>
+                    <div class="stat-label">Success Rate</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" data-count="250">0</div>
+                    <div class="stat-label">Crop Varieties</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="scroll-indicator">
+            <span></span>
+        </div>
+    </section>
+
+    <!-- Carousel Section -->
+    <section class="carousel-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Success Stories</h2>
+                <p>See how FarmAI is transforming agriculture</p>
+            </div>
+            
+            <div id="farmCarousel" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-indicators">
+                    <button type="button" data-bs-target="#farmCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                    <button type="button" data-bs-target="#farmCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                    <button type="button" data-bs-target="#farmCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                </div>
+                
+                <div class="carousel-inner">
+                    <!-- Slide 1 -->
+                    <div class="carousel-item active">
+                        <!-- Quote Slide content -->
+                        <div class="quote-slide">
+                            <div class="quote-card">
+                                <div class="quote-image">
+                                     <img src="{{ url_for('static', filename='images/bg.jpg') }}" alt="FarmAI Vision">
+                                </div>
+                                <div class="quote-text">
+                                    <div class="quote-icon"><i class="fas fa-quote-left"></i></div>
+                                    <h3>Transforming Agriculture with AI</h3>
+                                    <blockquote>
+                                        "FarmAI bridges the gap between traditional farming and cutting-edge technology, empowering farmers with data-driven insights for sustainable agriculture and food security."
+                                    </blockquote>
+                                    <div class="quote-author"><p>- FarmAI Vision Statement</p></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Slide 2 -->
+                    <div class="carousel-item">
+                        <div class="weather-slide">
+                            <div class="weather-card">
+                                <div class="weather-banner">
+                                            <img src="{{ url_for('static', filename='images/weather.jpg') }}" alt="Weather Banner">
+                                </div>
+                                <div class="weather-header">
+                                    <div class="location"><i class="fas fa-map-marker-alt"></i><span>Punjab, India</span></div>
+                                    <i class="fas fa-sun main-icon"></i>
+                                </div>
+                                <div class="temperature">28°C</div>
+                                <div class="condition">Sunny with clear skies</div>
+                                <div class="weather-stats">
+                                    <div class="stat"><i class="fas fa-wind"></i><span>12 km/h</span></div>
+                                    <div class="stat"><i class="fas fa-tint"></i><span>45% Humidity</span></div>
+                                    <div class="stat"><i class="fas fa-compress-arrows-alt"></i><span>1013 hPa</span></div>
+                                </div>
+                                <div class="recommendation">
+                                    <h4>Farming Tip</h4>
+                                    <p>Great day for irrigation and applying fertilizers. Harvesting wheat is favorable today.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Slide 3 -->
+                    <div class="carousel-item">
+                        <div class="future-slide">
+                            <div class="future-card">
+                                <div class="future-image">
+                                            <img src="{{ url_for('static', filename='images/farmAI.jpg') }}">
+                                </div>
+                                <div class="future-text">
+                                    <div class="future-icon"><i class="fas fa-robot"></i></div>
+                                    <h3>The Future of Farming</h3>
+                                    <p>FarmAI is pioneering the next agricultural revolution with AI-powered solutions that increase yields, reduce waste, and make farming more sustainable for future generations.</p>
+                                    <div class="future-features">
+                                        <div class="feature-item"><i class="fas fa-brain"></i><span>Predictive Analytics</span></div>
+                                        <div class="feature-item"><i class="fas fa-seedling"></i><span>Sustainable Practices</span></div>
+                                        <div class="feature-item"><i class="fas fa-hand-holding-usd"></i><span>Economic Empowerment</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="custom-carousel-controls">
+                    <button class="custom-carousel-control prev-control" type="button" data-bs-target="#farmCarousel" data-bs-slide="prev">
+                        <i class="fas fa-chevron-left"></i><span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="custom-carousel-control next-control" type="button" data-bs-target="#farmCarousel" data-bs-slide="next">
+                        <i class="fas fa-chevron-right"></i><span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="feature">
+        <div class="container">
+            <div class="section-header">
+                <p class="subtitle">KEY FEATURES</p>
+                <h2 class="title">Why Choose FarmAI</h2>
+                <p class="description">Revolutionizing agriculture with cutting-edge AI technology</p>
+            </div>
+
+            <div class="features-container">
+                <div class="features-content">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <div class="feature-info">
+                            <h3>Quick Diagnosis</h3>
+                            <p>AI models make it possible to identify and treat crop diseases quickly and efficiently, preventing widespread damage to your crops.</p>
+                        </div>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="feature-info">
+                            <h3>Increase Yield</h3>
+                            <p>With our precise recommendations, farmers can easily maximize the yield of their fields through optimized planting and care strategies.</p>
+                        </div>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-dollar-sign"></i>
+                        </div>
+                        <div class="feature-info">
+                            <h3>Reduce Costs</h3>
+                            <p>Eliminate the need for expensive agricultural experts or advanced crop management tools, significantly reducing production costs.</p>
+                        </div>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-cloud-sun-rain"></i>
+                        </div>
+                        <div class="feature-info">
+                            <h3>Smart Weather Adaptation</h3>
+                            <p>Our system analyzes weather patterns to provide recommendations that protect your crops from adverse conditions.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="features-visual">
+                    <div class="visual-container">
+                        <img src="{{ url_for('static', filename='images/features-bg.png') }}" alt="FarmAI Technology" class="feature-image">
+                        <div class="visual-overlay">
+                            <div class="stat-item">
+                                <h4>98%</h4>
+                                <p>Accuracy Rate</p>
+                            </div>
+                            <div class="stat-item">
+                                <h4>5000+</h4>
+                                <p>Happy Farmers</p>
+                            </div>
+                            <div class="stat-item">
+                                <h4>35%</h4>
+                                <p>Average Yield Increase</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services">
+        <div class="title-text">
+            <p>SERVICES</p>
+            <h1>WE PROVIDE</h1>
+        </div>
+        <div class="service-box">
+            <!-- Original Services -->
+            <div class="single-service">
+                <div class="service-icon">
+                    <i class="fas fa-leaf"></i>
+                </div>
+                <div class="service-content">
+                    <img src="../static/images/service-1.jpg" alt="Crop Recommendation">
+                </div>
+                <a href="/crop-recommend">
+                    <h1>Crop Recommendation</h1>
+                </a>
+                <p>Analyzes soil and weather data to find the best suited crop. </p>
+            </div>
+
+            <div class="single-service">
+                <div class="service-icon">
+                    <i class="fas fa-flask"></i>
+                </div>
+                <div class="service-content">
+                    <img src="../static/images/service-3.jpg" alt="Fertilizer Recommendation">
+                </div>
+                <a href="/fertilizer-recommend">
+                    <h1>Fertilizer Recommendation</h1>
+                </a>
+                <p>Analyzes soil and crop type to find the best fertilizer for your crop. </p>
+            </div>
+
+            <div class="single-service">
+                <div class="service-icon">
+                    <i class="fas fa-heartbeat"></i>
+                </div>
+                <div class="service-content">
+                    <img src="../static/images/service-2.jpg" alt="Crop Disease Prediction">
+                </div>
+                <a href="/crop-disease">
+                    <h1>Crop Disease Prediction</h1>
+                </a>
+                <p>From the images of your crops our models can check their health. </p>
+            </div>
+
+            <!-- New Services -->
+            <div class="single-service">
+                <div class="service-icon">
+                    <i class="fas fa-chart-bar"></i>
+                </div>
+                <div class="service-content">
+                    <img src="../static/images/service-4.png" alt="Crop Yield Prediction">
+                </div>
+                <a href="../yield-predict">
+                    <h1>Crop Yield Prediction</h1>
+                </a>
+                <p>Predict your harvest yield based on historical data and current conditions. </p>
+            </div>
+
+            <div class="single-service">
+                <div class="service-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="service-content">
+                    <img src="../static/images/service-5.png" alt="Community Forum">
+                </div>
+                <a href="../community-forum"> 
+                    <h1>Community Forum</h1>
+                </a>
+                <p>Connect with other farmers, share experiences and get expert advice. </p>
+            </div>
+
+            <div class="single-service">
+                <div class="service-icon">
+                    <i class="fas fa-cloud-sun-rain"></i>
+                </div>
+                <div class="service-content">
+                    <img src="../static/images/service-6.jpg" alt="Weather Forecast">
+                </div>
+                <a href="../weather">
+                    <h1>Weather Forecast</h1>
+                </a>
+                <p>Accurate weather predictions tailored to your specific farm location. </p>
+            </div>
+
+            <div class="single-service">
+                <div class="service-icon">
+                    <i class="fas fa-microphone"></i>
+                </div>
+                <div class="service-content">
+                    <img src="../static/images/service-7.jpg" alt="Voice Input">
+                </div>
+                <a href="../voice-input/">
+                    <h1>Voice Input</h1>
+                </a>
+                <p>Use voice commands in your local language for easier interaction. </p>
+            </div>
+
+            <div class="single-service">
+                <div class="service-icon">
+                    <i class="fas fa-language"></i>
+                </div>
+                <div class="service-content">
+                    <img src="../static/images/image.png" alt="Multilingual Interface">
+                </div>
+                <a href="../multilingual/">
+                    <h1>Multilingual Interface</h1>
+                </a>
+                <p>Access our services in multiple regional languages for better understanding. </p>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Contact Section -->
+   <section id="contact">
+        <div class="footer-title-text">
+            <h1>CONTACT US</h1>
+        </div>
+        <div class="footer-row">
+            <div class="footer-left">
+                <h1>AgriGo</h1>
+                <p>Email: farmAI@gmail.com</p>
+            </div>
+            <div class="footer-right">
+                <h1>Follow Us</h1>
+                <p>Github: <a href="https://github.com/shekhar6264"> <i class="fab fa-github"></i>Aymen1001 </a></p>
+            </div>
+        </div>
+    </section>
+
+    {% endblock %}
+
+
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Counter animation for stats
+        document.addEventListener('DOMContentLoaded', function() {
+            const counters = document.querySelectorAll('.stat-number');
+            const speed = 200;
+            
+            counters.forEach(counter => {
+                const target = +counter.getAttribute('data-count');
+                const count = +counter.innerText;
+                const increment = Math.ceil(target / speed);
+                
+                if (count < target) {
+                    const updateCount = () => {
+                        const current = +counter.innerText;
+                        
+                        if (current < target) {
+                            counter.innerText = Math.ceil(current + increment);
+                            setTimeout(updateCount, 1);
+                        } else {
+                            counter.innerText = target;
+                        }
+                    };
+                    
+                    updateCount();
+                }
+            });
+            
+            // Smooth scrolling for navigation links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 85,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
