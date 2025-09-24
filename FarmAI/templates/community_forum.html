@@ -1,30 +1,389 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Community Forum - FarmAI</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body>
-    <div class="container mt-5">
-        <h2 class="mb-4">🌱 FarmAI Community Forum</h2>
-        <p class="text-muted">Ask questions, share tips, and connect with other farmers!</p>
+{% extends "index.html" %}
+{% block content %}
+<style>
+    .forum-container {
+        max-width: 1000px;
+        margin: 2rem auto;
+        padding: 0 20px;
+    }
+    
+    .forum-header {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+    
+    .forum-header h1 {
+        color: #2e7d32;
+        margin-bottom: 0.5rem;
+    }
+    
+    .forum-header p {
+        color: #666;
+        font-size: 1.1rem;
+    }
+    
+    .forum-content {
+        display: flex;
+        gap: 2rem;
+    }
+    
+    .categories-sidebar {
+        flex: 0 0 250px;
+        background: white;
+        border-radius: 8px;
+        padding: 1.5rem;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    
+    .categories-sidebar h2 {
+        color: #2e7d32;
+        margin-bottom: 1rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid #4caf50;
+    }
+    
+    .category-list {
+        list-style: none;
+    }
+    
+    .category-list li {
+        margin-bottom: 0.8rem;
+        padding: 0.8rem;
+        border-radius: 4px;
+        transition: background 0.3s;
+    }
+    
+    .category-list li:hover {
+        background: #f5f5f5;
+    }
+    
+    .category-list a {
+        text-decoration: none;
+        color: #333;
+        display: flex;
+        align-items: center;
+    }
+    
+    .discussions-main {
+        flex: 1;
+        background: white;
+        border-radius: 8px;
+        padding: 1.5rem;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    
+    .discussions-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+    }
+    
+    .new-discussion-btn {
+        background: #2e7d32;
+        color: white;
+        border: none;
+        padding: 0.6rem 1.2rem;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 1rem;
+        transition: background 0.3s;
+    }
+    
+    .new-discussion-btn:hover {
+        background: #1b5e20;
+    }
+    
+    .discussion-list {
+        list-style: none;
+    }
+    
+    .discussion-item {
+        padding: 1.2rem;
+        border-bottom: 1px solid #ddd;
+        transition: background 0.3s;
+    }
+    
+    .discussion-item:hover {
+        background: #f9f9f9;
+    }
+    
+    .discussion-title {
+        font-weight: bold;
+        color: #2e7d32;
+        text-decoration: none;
+        font-size: 1.1rem;
+        display: block;
+        margin-bottom: 0.5rem;
+    }
+    
+    .discussion-meta {
+        display: flex;
+        font-size: 0.9rem;
+        color: #666;
+        margin-bottom: 0.5rem;
+    }
+    
+    .discussion-meta span {
+        margin-right: 1rem;
+    }
+    
+    .discussion-excerpt {
+        color: #555;
+    }
+    
+    .simple-chat {
+        margin-top: 2rem;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+    
+    .chat-header {
+        background: #2e7d32;
+        color: white;
+        padding: 1rem;
+        text-align: center;
+    }
+    
+    .chat-messages {
+        height: 300px;
+        overflow-y: auto;
+        padding: 1rem;
+        background: #f9f9f9;
+    }
+    
+    .message {
+        margin-bottom: 1rem;
+        padding: 0.8rem;
+        border-radius: 8px;
+        max-width: 80%;
+    }
+    
+    .message.own {
+        background: #4caf50;
+        color: white;
+        margin-left: auto;
+    }
+    
+    .message.other {
+        background: white;
+        border: 1px solid #ddd;
+    }
+    
+    .message-sender {
+        font-weight: bold;
+        margin-bottom: 0.3rem;
+        font-size: 0.9rem;
+    }
+    
+    .message-time {
+        font-size: 0.8rem;
+        opacity: 0.7;
+        text-align: right;
+        margin-top: 0.3rem;
+    }
+    
+    .chat-input {
+        display: flex;
+        padding: 1rem;
+        background: white;
+        border-top: 1px solid #ddd;
+    }
+    
+    .chat-input input {
+        flex: 1;
+        padding: 0.8rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        margin-right: 0.5rem;
+    }
+    
+    .chat-input button {
+        background: #2e7d32;
+        color: white;
+        border: none;
+        padding: 0.8rem 1.5rem;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    
+    @media (max-width: 768px) {
+        .forum-content {
+            flex-direction: column;
+        }
         
-        <div class="list-group">
-            {% for post in posts %}
-            <a href="#" class="list-group-item list-group-item-action">
-                <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1">{{ post.topic }}</h5>
-                    <small>{{ post.replies }} replies</small>
-                </div>
-                <small>Posted by {{ post.user }}</small>
-            </a>
-            {% endfor %}
-        </div>
+        .categories-sidebar {
+            flex: 1;
+        }
+    }
+</style>
 
-        <div class="mt-4">
-            <a href="{{ url_for('index') }}" class="btn btn-secondary">⬅ Back to Home</a>
-        </div>
+<div class="forum-container">
+    <div class="forum-header">
+        <h1>Community Forum</h1>
+        <p>Connect with fellow farmers, share experiences, and get answers to your agricultural questions.</p>
     </div>
-</body>
-</html>
+    
+    <div class="forum-content">
+        <aside class="categories-sidebar">
+            <h2>Categories</h2>
+            <ul class="category-list">
+                <li><a href="#">🌱 Crop Cultivation</a></li>
+                <li><a href="#">🐛 Pest Control</a></li>
+                <li><a href="#">💧 Irrigation Methods</a></li>
+                <li><a href="#">🌾 Harvesting Techniques</a></li>
+                <li><a href="#">🧪 Soil Health</a></li>
+                <li><a href="#">🌤 Weather & Climate</a></li>
+                <li><a href="#">💰 Market Prices</a></li>
+                <li><a href="#">🔬 New Technologies</a></li>
+            </ul>
+        </aside>
+        
+        <main class="discussions-main">
+            <div class="discussions-header">
+                <h2>Recent Discussions</h2>
+                <button class="new-discussion-btn">+ New Discussion</button>
+            </div>
+            
+            <ul class="discussion-list">
+                <li class="discussion-item">
+                    <a href="#" class="discussion-title">Best organic fertilizers for tomato crops</a>
+                    <div class="discussion-meta">
+                        <span>💬 24 replies</span>
+                        <span>👁 156 views</span>
+                    </div>
+                    <div class="discussion-excerpt">
+                        Looking for recommendations on organic fertilizers that have worked well for tomato cultivation in clay soil conditions...
+                    </div>
+                    <div class="discussion-meta">
+                        <span>By: FarmerRaj</span>
+                        <span>Yesterday, 4:32 PM</span>
+                    </div>
+                </li>
+                
+                <li class="discussion-item">
+                    <a href="#" class="discussion-title">Dealing with recent pest infestation in wheat fields</a>
+                    <div class="discussion-meta">
+                        <span>💬 18 replies</span>
+                        <span>👁 203 views</span>
+                    </div>
+                    <div class="discussion-excerpt">
+                        Noticed unusual patterns of damage in my wheat crop. Has anyone experienced similar issues and found effective solutions?
+                    </div>
+                    <div class="discussion-meta">
+                        <span>By: GreenThumb42</span>
+                        <span>2 days ago</span>
+                    </div>
+                </li>
+                
+                <li class="discussion-item">
+                    <a href="#" class="discussion-title">Drip irrigation vs sprinkler systems - cost analysis</a>
+                    <div class="discussion-meta">
+                        <span>💬 31 replies</span>
+                        <span>👁 287 views</span>
+                    </div>
+                    <div class="discussion-excerpt">
+                        Planning to upgrade my irrigation system for my 5-acre vegetable farm. Looking for real-world cost experiences from fellow farmers...
+                    </div>
+                    <div class="discussion-meta">
+                        <span>By: WaterWiseFarmer</span>
+                        <span>3 days ago</span>
+                    </div>
+                </li>
+            </ul>
+            
+            <!-- Simple Chat Section -->
+            <div class="simple-chat">
+                <div class="chat-header">
+                    <h3>Live Community Chat</h3>
+                </div>
+                <div class="chat-messages" id="chatMessages">
+                    <!-- Messages will be loaded here by JavaScript -->
+                </div>
+                <div class="chat-input">
+                    <input type="text" id="messageInput" placeholder="Type your message here...">
+                    <button id="sendMessage">Send</button>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+<script>
+    // Simple chat functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        const chatMessages = document.getElementById('chatMessages');
+        const messageInput = document.getElementById('messageInput');
+        const sendButton = document.getElementById('sendMessage');
+        
+        // Sample messages to start with
+        const sampleMessages = [
+            { sender: "AgriExpert", message: "Welcome to the community chat! Feel free to ask any farming-related questions.", time: "10:30 AM" },
+            { sender: "FarmerJohn", message: "Has anyone tried the new organic pesticide for aphids?", time: "10:45 AM" },
+            { sender: "CropMaster", message: "Yes, I used it last season. Worked well but needs repeated application.", time: "10:52 AM" }
+        ];
+        
+        // Display sample messages
+        sampleMessages.forEach(msg => {
+            addMessageToChat(msg.sender, msg.message, msg.time, false);
+        });
+        
+        // Function to add a message to the chat
+        function addMessageToChat(sender, message, time, isOwnMessage) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = message ${isOwnMessage ? 'own' : 'other'};
+            
+            messageDiv.innerHTML = `
+                <div class="message-sender">${sender}</div>
+                <div class="message-text">${message}</div>
+                <div class="message-time">${time}</div>
+            `;
+            
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+        
+        // Function to send a message
+        function sendMessage() {
+            const message = messageInput.value.trim();
+            if (message) {
+                const now = new Date();
+                const time = ${now.getHours()}:${now.getMinutes().toString().padStart(2, '0')};
+                
+                // Add message to chat
+                addMessageToChat("You", message, time, true);
+                
+                // Clear input
+                messageInput.value = '';
+                
+                // Simulate a response after a short delay
+                setTimeout(() => {
+                    const responses = [
+                        "That's an interesting point. I've had similar experiences.",
+                        "Thanks for sharing! Has anyone else tried this method?",
+                        "I recommend checking the soil pH before making that decision."
+                    ];
+                    const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+                    const botSenders = ["AgriExpert", "FarmGuide", "CropMaster"];
+                    const randomSender = botSenders[Math.floor(Math.random() * botSenders.length)];
+                    
+                    const responseTime = new Date();
+                    const responseTimeStr = ${responseTime.getHours()}:${responseTime.getMinutes().toString().padStart(2, '0')};
+                    
+                    addMessageToChat(randomSender, randomResponse, responseTimeStr, false);
+                }, 1000 + Math.random() * 2000);
+            }
+        }
+        
+        // Event listeners
+        sendButton.addEventListener('click', sendMessage);
+        messageInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+    });
+</script>
+
+{% endblock %}

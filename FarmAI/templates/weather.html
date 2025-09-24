@@ -2,32 +2,181 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Weather Forecast - FarmAI</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    <div class="container mt-5">
-        <h2>🌦 Weather Forecast for {{ city }}</h2>
-        <p class="text-muted">5-day forecast powered by OpenWeatherMap</p>
+    <div class="weather-page">
+        <!-- Background Video -->
+        <video muted autoplay loop class="video-bg" id="background-video">
+            <source src="{{ url_for('static', filename='videos/video1.mp4') }}" type="video/mp4">
+        </video>
 
-        <div class="row">
-            {% for day in forecast %}
-            <div class="col-md-2 col-sm-4 col-6 mb-3">
-                <div class="card text-center shadow-sm">
-                    <div class="card-body">
-                        <h6>{{ day.date }}</h6>
-                        <img src="http://openweathermap.org/img/wn/{{ day.icon }}@2x.png" alt="Weather icon">
-                        <p><strong>{{ day.temp }}°C</strong></p>
-                        <small>{{ day.desc }}</small>
+        <div class="weather">
+            <!-- Search Bar -->
+            <div class="search-bar">
+                <input type="text" placeholder="Search" id="cityInput" onkeypress="if(event.key==='Enter') searchWeather()">
+                <img src="{{ url_for('static', filename='images/search.png') }}" alt="" onclick="searchWeather()">
+            </div>
+
+            <!-- Error Box -->
+            <div id="error-box" class="error-message" style="display:none;"></div>
+
+            <!-- Weather Content -->
+            <div id="weather-content" style="display:none;">
+                <div class="current-weather-section">
+                    <div class="location-row">
+                        <img src="{{ url_for('static', filename='images/location.png') }}" alt="" class="location-icon">
+                        <p class="location" id="location"></p>
+                    </div>
+                    <img src="" alt="" class="weather-icon" id="weather-icon">
+                    <p class="temperature"><span id="temperature"></span><sup>o</sup>C</p>
+                    <p class="description" id="description"></p>
+                </div>
+
+                <!-- Weather Details -->
+                <div class="weather-details-section">
+                    <div class="weather-data">
+                        <div class="col">
+                            <img src="{{ url_for('static', filename='images/humidity.png') }}" alt="">
+                            <div>
+                                <span>Humidity</span>
+                                <p id="humidity"></p>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <img src="{{ url_for('static', filename='images/wind.png') }}" alt="">
+                            <div>
+                                <span>Wind Speed</span>
+                                <p id="wind-speed"></p>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <img src="{{ url_for('static', filename='images/pressure.png') }}" alt="">
+                            <div>
+                                <span>Pressure</span>
+                                <p id="pressure"></p>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <img src="{{ url_for('static', filename='images/sunrise.png') }}" alt="">
+                            <div>
+                                <span>Sunrise</span>
+                                <p id="sunrise"></p>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <img src="{{ url_for('static', filename='images/sunset.png') }}" alt="">
+                            <div>
+                                <span>Sunset</span>
+                                <p id="sunset"></p>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <img src="{{ url_for('static', filename='images/wind-direction.png') }}" alt="">
+                            <div>
+                                <span>Wind Dir</span>
+                                <p id="wind-direction"></p>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <img src="{{ url_for('static', filename='images/rain.png') }}" alt="">
+                            <div>
+                                <span>Rainfall</span>
+                                <p id="rainfall"></p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            {% endfor %}
-        </div>
-
-        <div class="mt-4">
-            <a href="{{ url_for('index') }}" class="btn btn-secondary">⬅ Back to Home</a>
         </div>
     </div>
+
+    <!-- Script -->
+    <script>
+        const allIcons = {
+            "01d": "{{ url_for('static', filename='images/clear.png') }}",
+            "01n": "{{ url_for('static', filename='images/clear.png') }}",
+            "02d": "{{ url_for('static', filename='images/cloud.png') }}",
+            "02n": "{{ url_for('static', filename='images/cloud.png') }}",
+            "03d": "{{ url_for('static', filename='images/cloud.png') }}",
+            "03n": "{{ url_for('static', filename='images/cloud.png') }}",
+            "04d": "{{ url_for('static', filename='images/cloud.png') }}",
+            "04n": "{{ url_for('static', filename='images/cloud.png') }}",
+            "09d": "{{ url_for('static', filename='images/drizzle.png') }}",
+            "09n": "{{ url_for('static', filename='images/drizzle.png') }}",
+            "10d": "{{ url_for('static', filename='images/rain.png') }}",
+            "10n": "{{ url_for('static', filename='images/rain.png') }}",
+            "13d": "{{ url_for('static', filename='images/snow.png') }}",
+            "13n": "{{ url_for('static', filename='images/snow.png') }}"
+        };
+
+        function getWindDirection(deg) {
+            const directions = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"];
+            return directions[Math.round(deg / 45) % 8];
+        }
+
+        async function searchWeather() {
+            const city = document.getElementById('cityInput').value.trim();
+            const errorBox = document.getElementById('error-box');
+            errorBox.style.display = 'none';
+            errorBox.textContent = '';
+            if (!city) { errorBox.textContent = 'Please enter a city'; errorBox.style.display = 'block'; return; }
+
+            let response, data;
+            try {
+                response = await fetch('/weather-data', {
+                    method: 'POST',
+                    headers: {'Content-Type':'application/json'},
+                    body: JSON.stringify({city})
+                });
+                data = await response.json();
+            } catch (err) {
+                errorBox.textContent = 'Network error. Please try again.';
+                errorBox.style.display = 'block';
+                return;
+            }
+
+            if (!response.ok) {
+                errorBox.textContent = (data && data.error) ? data.error : 'Failed to load weather data';
+                errorBox.style.display = 'block';
+                document.getElementById('weather-content').style.display = 'none';
+                return;
+            }
+
+            const main = data.main || {};
+            const wind = data.wind || {};
+            const sys = data.sys || {};
+            const rain = data.rain || null;
+            const weatherArr = Array.isArray(data.weather) ? data.weather : (data.weather ? [data.weather] : []);
+            const w0 = weatherArr[0] || {};
+
+            document.getElementById('weather-content').style.display = 'block';
+            document.getElementById('location').textContent = data.name || city;
+            document.getElementById('temperature').textContent = (typeof main.temp === 'number') ? Math.round(main.temp) : '—';
+            document.getElementById('description').textContent = (w0.description ? String(w0.description).toUpperCase() : '');
+            document.getElementById('humidity').textContent = (typeof main.humidity === 'number') ? (main.humidity + ' %') : '—';
+            document.getElementById('wind-speed').textContent = (typeof wind.speed === 'number') ? (Math.round(wind.speed * 3.6) + ' Km/h') : '—';
+            document.getElementById('wind-direction').textContent = (typeof wind.deg === 'number') ? getWindDirection(wind.deg) : '—';
+            document.getElementById('pressure').textContent = (typeof main.pressure === 'number') ? (main.pressure + ' hPa') : '—';
+            document.getElementById('sunrise').textContent = (typeof sys.sunrise === 'number') ? new Date(sys.sunrise*1000).toLocaleTimeString() : '—';
+            document.getElementById('sunset').textContent = (typeof sys.sunset === 'number') ? new Date(sys.sunset*1000).toLocaleTimeString() : '—';
+            const rf = rain ? (rain['1h'] ?? rain['3h'] ?? 0) : 0;
+            document.getElementById('rainfall').textContent = rf + ' mm';
+            const iconCode = w0.icon || '01d';
+            document.getElementById('weather-icon').src = allIcons[iconCode] || allIcons['01d'];
+        }
+
+        document.getElementById('cityInput').addEventListener('keypress', function(e){
+            if(e.key==='Enter') searchWeather();
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('cityInput').value = 'Jammu';
+            searchWeather();
+        });
+    </script>
 </body>
 </html>
+

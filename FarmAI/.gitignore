@@ -1,0 +1,50 @@
+.env
+.env.*
+*.env
+
+# Python bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+.venv/
+env/
+ENV/
+.python-version
+
+# Build/packaging
+build/
+dist/
+*.egg-info/
+
+# Caches and tooling
+.cache/
+.pytest_cache/
+.ipynb_checkpoints/
+coverage/
+.coverage
+*.log
+logs/
+
+# IDE/editor
+.vscode/
+.idea/
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Flask instance folder (if used)
+instance/
+
+# Local data/databases (optional)
+data/
+*.sqlite
+*.db
+
+# Large model artifacts (optional)
+# FarmAI/models/**
+# !FarmAI/models/.keep

@@ -1214,7 +1214,7 @@ blockquote {
 }
 
 
-        /* Enhanced Services Section */
+ /* Enhanced Services Section */
 #services {
     width: 100%;
     padding: 70px 0;
@@ -1224,7 +1224,7 @@ blockquote {
 .title-text {
     text-align: center;
     padding-bottom: 70px;
-	 font-size: 42px;
+    font-size: 42px;
     font-weight: 700;
     color: #2e7d32;
     margin-bottom: 15px;
@@ -1376,8 +1376,6 @@ blockquote {
 .single-service a:hover {
     color: #3cb653;
 }
-
-
 
 /* Mobile Responsiveness for Services */
 @media screen and (max-width: 768px) {
@@ -1910,119 +1908,147 @@ document.addEventListener("DOMContentLoaded", function() {
     </section>
 
     <!-- Services Section -->
-    <section id="services">
-        <div class="title-text">
-            <p>SERVICES</p>
-            <h1>WE PROVIDE</h1>
+<!-- Services Section -->
+<section id="services">
+    <div class="title-text">
+        <p>SERVICES</p>
+        <h1>WE PROVIDE</h1>
+    </div>
+    <div class="service-box">
+        <!-- Original Services -->
+        <div class="single-service">
+            <div class="service-icon">
+                <i class="fas fa-leaf"></i>
+            </div>
+            <div class="service-content">
+                <img src="../static/images/service-1.jpg" alt="Crop Recommendation">
+            </div>
+            <a href="/crop-recommend">
+                <h1>Crop Recommendation</h1>
+            </a>
+            <p>Analyzes soil and weather data to find the best suited crop. </p>
         </div>
-        <div class="service-box">
-            <!-- Original Services -->
-            <div class="single-service">
-                <div class="service-icon">
-                    <i class="fas fa-leaf"></i>
-                </div>
-                <div class="service-content">
-                    <img src="../static/images/service-1.jpg" alt="Crop Recommendation">
-                </div>
-                <a href="/crop-recommend">
-                    <h1>Crop Recommendation</h1>
-                </a>
-                <p>Analyzes soil and weather data to find the best suited crop. </p>
-            </div>
 
-            <div class="single-service">
-                <div class="service-icon">
-                    <i class="fas fa-flask"></i>
-                </div>
-                <div class="service-content">
-                    <img src="../static/images/service-3.jpg" alt="Fertilizer Recommendation">
-                </div>
-                <a href="/fertilizer-recommend">
-                    <h1>Fertilizer Recommendation</h1>
-                </a>
-                <p>Analyzes soil and crop type to find the best fertilizer for your crop. </p>
+        <div class="single-service">
+            <div class="service-icon">
+                <i class="fas fa-flask"></i>
             </div>
-
-            <div class="single-service">
-                <div class="service-icon">
-                    <i class="fas fa-heartbeat"></i>
-                </div>
-                <div class="service-content">
-                    <img src="../static/images/service-2.jpg" alt="Crop Disease Prediction">
-                </div>
-                <a href="/crop-disease">
-                    <h1>Crop Disease Prediction</h1>
-                </a>
-                <p>From the images of your crops our models can check their health. </p>
+            <div class="service-content">
+                <img src="../static/images/service-3.jpg" alt="Fertilizer Recommendation">
             </div>
-
-            <!-- New Services -->
-            <div class="single-service">
-                <div class="service-icon">
-                    <i class="fas fa-chart-bar"></i>
-                </div>
-                <div class="service-content">
-                    <img src="../static/images/service-4.png" alt="Crop Yield Prediction">
-                </div>
-                <a href="../yield-predict">
-                    <h1>Crop Yield Prediction</h1>
-                </a>
-                <p>Predict your harvest yield based on historical data and current conditions. </p>
-            </div>
-
-            <div class="single-service">
-                <div class="service-icon">
-                    <i class="fas fa-users"></i>
-                </div>
-                <div class="service-content">
-                    <img src="../static/images/service-5.png" alt="Community Forum">
-                </div>
-                <a href="../community-forum"> 
-                    <h1>Community Forum</h1>
-                </a>
-                <p>Connect with other farmers, share experiences and get expert advice. </p>
-            </div>
-
-            <div class="single-service">
-                <div class="service-icon">
-                    <i class="fas fa-cloud-sun-rain"></i>
-                </div>
-                <div class="service-content">
-                    <img src="../static/images/service-6.jpg" alt="Weather Forecast">
-                </div>
-                <a href="../weather">
-                    <h1>Weather Forecast</h1>
-                </a>
-                <p>Accurate weather predictions tailored to your specific farm location. </p>
-            </div>
-
-            <div class="single-service">
-                <div class="service-icon">
-                    <i class="fas fa-microphone"></i>
-                </div>
-                <div class="service-content">
-                    <img src="../static/images/service-7.jpg" alt="Voice Input">
-                </div>
-                <a href="../voice-input/">
-                    <h1>Voice Input</h1>
-                </a>
-                <p>Use voice commands in your local language for easier interaction. </p>
-            </div>
-
-            <div class="single-service">
-                <div class="service-icon">
-                    <i class="fas fa-language"></i>
-                </div>
-                <div class="service-content">
-                    <img src="../static/images/image.png" alt="Multilingual Interface">
-                </div>
-                <a href="../multilingual/">
-                    <h1>Multilingual Interface</h1>
-                </a>
-                <p>Access our services in multiple regional languages for better understanding. </p>
-            </div>
+            <a href="/fertilizer-recommend">
+                <h1>Fertilizer Recommendation</h1>
+            </a>
+            <p>Analyzes soil and crop type to find the best fertilizer for your crop. </p>
         </div>
-    </section>
+
+        <div class="single-service">
+            <div class="service-icon">
+                <i class="fas fa-heartbeat"></i>
+            </div>
+            <div class="service-content">
+                <img src="../static/images/service-2.jpg" alt="Crop Disease Prediction">
+            </div>
+            <a href="/crop-disease">
+                <h1>Crop Disease Prediction</h1>
+            </a>
+            <p>From the images of your crops our models can check their health. </p>
+        </div>
+
+        <!-- New Services -->
+        <div class="single-service">
+            <div class="service-icon">
+                <i class="fas fa-chart-bar"></i>
+            </div>
+            <div class="service-content">
+                <img src="../static/images/service-4.png" alt="Crop Yield Prediction">
+            </div>
+            <a href="../yield-predict">
+                <h1>Crop Yield Prediction</h1>
+            </a>
+            <p>Predict your harvest yield based on historical data and current conditions. </p>
+        </div>
+
+        <div class="single-service">
+            <div class="service-icon">
+                <i class="fas fa-users"></i>
+            </div>
+            <div class="service-content">
+                <img src="../static/images/service-5.png" alt="Community Forum">
+            </div>
+            <a href="../community-forum"> 
+                <h1>Community Forum</h1>
+            </a>
+            <p>Connect with other farmers, share experiences and get expert advice. </p>
+        </div>
+
+        <div class="single-service">
+            <div class="service-icon">
+                <i class="fas fa-cloud-sun-rain"></i>
+            </div>
+            <div class="service-content">
+                <img src="../static/images/service-6.jpg" alt="Weather Forecast">
+            </div>
+            <a href="../weather">
+                <h1>Weather Forecast</h1>
+            </a>
+            <p>Accurate weather predictions tailored to your specific farm location. </p>
+        </div>
+
+        <!-- Updated Services -->
+        <div class="single-service">
+            <div class="service-icon">
+                <i class="fas fa-tint"></i>
+            </div>
+            <div class="service-content">
+                <img src="../static/images/bg.jpg" alt="Irrigation Scheduling">
+            </div>
+            <a href="../irrigation-scheduling/">
+                <h1>Irrigation Scheduling</h1>
+            </a>
+            <p>Optimize water usage with smart irrigation schedules based on soil moisture. </p>
+        </div>
+
+        <div class="single-service">
+            <div class="service-icon">
+                <i class="fas fa-bug"></i>
+            </div>
+            <div class="service-content">
+                <img src="../static/images/bg2.jpg" alt="Pesticide Recommendation">
+            </div>
+            <a href="../pesticide-recommendation/">
+                <h1>Pesticide Recommendation</h1>
+            </a>
+            <p>Get appropriate pesticide suggestions based on pest type and crop stage. </p>
+        </div>
+
+        <div class="single-service">
+            <div class="service-icon">
+                <i class="fas fa-chart-line"></i>
+            </div>
+            <div class="service-content">
+                <img src="../static/images/service-9.jpg" alt="Market Price Prediction">
+            </div>
+            <a href="../market-price-prediction/">
+                <h1>Market Price Prediction</h1>
+            </a>
+            <p>Forecast crop prices to help you make better selling decisions. </p>
+        </div>
+
+        <div class="single-service">
+            <div class="service-icon">
+                <i class="fas fa-language"></i>
+            </div>
+            <div class="service-content">
+                <img src="../static/images/service-8.png" alt="Multilingual Interface">
+            </div>
+            <a href="../multilingual/">
+                <h1>Multilingual Interface</h1>≠
+            </a>
+            <p>Access our services in multiple regional languages for better understanding. </p>
+        </div>
+    </div>
+</section>
 
 
     <!-- Contact Section -->

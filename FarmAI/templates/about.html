@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -513,5 +513,457 @@
             });
         });
     </script>
+</body>
+</html> -->
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>About Us - FarmAI</title>
+
+    <!-- Bootstrap & Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kaushan+Script&family=Poppins:wght@100;400;600&display=swap" rel="stylesheet">
+
+    <style>
+        * { padding: 0; margin: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+            padding-top: 85px;
+        }
+
+        .navbar {
+            padding: 0.8rem 2rem;
+            background: linear-gradient(135deg, #212529 0%, #2c3034 100%) !important;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .navbar-brand { display: flex; align-items: center; font-weight: 700; }
+        .brand-text {
+            font-size: 28px;
+            font-family: 'Kaushan Script', cursive;
+            color: #fff;
+            margin-left: 12px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+
+        .logo-icon {
+            font-size: 32px;
+            color: #4cd964;
+            filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.3));
+            transition: all 0.3s ease;
+        }
+        .navbar-brand:hover .logo-icon { transform: rotate(15deg) scale(1.1); }
+
+        .navbar-nav { align-items: center; }
+        .navbar-nav .nav-item { margin: 0 0.4rem; }
+
+        .navbar-nav .nav-link {
+            color: rgba(255, 255, 255, 0.85) !important;
+            font-weight: 500;
+            padding: 0.6rem 1rem;
+            transition: all 0.3s ease;
+            border-radius: 6px;
+            position: relative;
+            font-size: 1.05rem;
+        }
+        .navbar-nav .nav-link:hover {
+            color: #fff !important;
+            background-color: rgba(255, 255, 255, 0.12);
+            transform: translateY(-2px);
+        }
+        .navbar-nav .nav-link.active {
+            color: #fff !important;
+            background-color: rgba(255, 255, 255, 0.1);
+            font-weight: 600;
+        }
+        .navbar-nav .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 50%;
+            width: 0;
+            height: 3px;
+            background: #4cd964;
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+        .navbar-nav .nav-link:hover::after,
+        .navbar-nav .nav-link.active::after { width: 70%; }
+
+        .navbar-toggler { border: 2px solid rgba(255, 255, 255, 0.3); padding: 0.35rem 0.6rem; }
+        .navbar-toggler:focus { box-shadow: 0 0 0 3px rgba(76, 217, 100, 0.25); }
+
+        .btn-sign-in {
+            background: linear-gradient(135deg, #4cd964 0%, #3cb653 100%);
+            border: 2px solid #4cd964;
+            color: white !important;
+            font-weight: 600;
+            padding: 0.6rem 1.8rem;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(76, 217, 100, 0.3);
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn-sign-in:hover {
+            background: linear-gradient(135deg, #3cb653 0%, #2e9e47 100%);
+            border-color: #3cb653;
+            color: white !important;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(76, 217, 100, 0.4);
+        }
+
+        .about-hero {
+            background: linear-gradient(rgba(0, 100, 0, 0.3), rgba(0, 100, 0, 0.3)),
+                        url("{{ url_for('static', filename='images/bg1.jpg') }}") center/cover;
+            min-height: 60vh;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            color: white;
+        }
+        .about-hero h1 { font-size: 3.5rem; font-family: 'Kaushan Script', cursive; margin-bottom: 1rem; }
+        .about-hero p { font-size: 1.3rem; max-width: 700px; margin: 0 auto; }
+
+        .mission-section { padding: 80px 0; background: white; }
+        .mission-card {
+            background: linear-gradient(135deg, #4cd964, #3cb653);
+            color: white;
+            padding: 50px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 15px 30px rgba(76, 217, 100, 0.3);
+        }
+        .mission-card h2 { font-size: 2.5rem; margin-bottom: 20px; font-family: 'Kaushan Script', cursive; }
+
+        .team-section { padding: 80px 0; background: #f8f9fa; }
+        .values-section { padding: 80px 0; background: white; }
+        .stats-section {
+            padding: 80px 0;
+            background: linear-gradient(135deg, #4cd964, #3cb653);
+            color: white;
+        }
+
+        .section-title { text-align: center; margin-bottom: 50px; }
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: #2e7d32;
+            margin-bottom: 15px;
+            font-family: 'Kaushan Script', cursive;
+        }
+        .section-title p { color: #555; font-size: 1.1rem; max-width: 600px; margin: 0 auto; }
+
+        .value-card {
+            text-align: center;
+            padding: 30px;
+            border-radius: 10px;
+            transition: transform 0.3s ease;
+            height: 100%;
+            background: white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .value-card:hover { transform: translateY(-10px); }
+        .value-icon { font-size: 3rem; color: #4cd964; margin-bottom: 20px; }
+
+        .stat-number { font-size: 3rem; font-weight: 700; margin-bottom: 10px; }
+
+        #contact {
+            padding: 60px 0 20px;
+            background: linear-gradient(rgba(0,0,0,0.1), #3b4638), 
+                        url("{{ url_for('static', filename='images/bg.jpg') }}") center/cover;
+            color: #fff;
+        }
+        .footer-title-text h1 {
+            text-align: center;
+            padding-bottom: 70px;
+            font-family: 'Kaushan Script', cursive;
+        }
+        .footer-row {
+            width: 80%;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        .footer-left, .footer-right { flex: 1; min-width: 300px; padding: 10px; }
+        .footer-right { text-align: right; }
+        .footer-right a { color: #fff; text-decoration: none; }
+        .footer-row h1 { font-family: 'Kaushan Script', cursive; margin: 5px 0; }
+
+        @media (max-width: 768px) {
+            .about-hero h1 { font-size: 2.5rem; }
+            .about-hero p { font-size: 1.1rem; }
+            .mission-card { padding: 30px; }
+            .footer-row { flex-direction: column; text-align: center; }
+            .footer-right { text-align: center; }
+        }
+
+        /* Google Translate box */
+        #google_translate_element {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            z-index: 9999;
+            background: white;
+            border-radius: 8px;
+            padding: 5px 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+        }
+    </style>
+</head>
+<body>
+    <!-- Google Translate Dropdown -->
+    <div id="google_translate_element"></div>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-xl navbar-dark fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{{ url_for('index') }}">
+                <i class="fas fa-seedling logo-icon"></i>
+                <span class="brand-text">FarmAI</span>
+            </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('index') }}">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('index') }}#feature">Features</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('index') }}#services">Services</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Leaderboard</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="{{ url_for('about') }}">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('index') }}#contact">Contact Us</a></li>
+                    <li class="nav-item"><a class="btn btn-sign-in" href="#">Sign In</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- About Hero Section -->
+    <section class="about-hero">
+        <div class="container">
+            <h1>About FarmAI</h1>
+            <p>Revolutionizing agriculture through artificial intelligence and data-driven insights</p>
+        </div>
+    </section>
+
+    <!-- Mission Section -->
+    <section class="mission-section">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <div class="mission-card">
+                        <h2>Our Mission</h2>
+                        <p class="lead">To empower farmers worldwide with AI-powered tools that increase crop yield, reduce costs, and promote sustainable farming practices.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Story Section -->
+    <section class="team-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Our Story</h2>
+                <p>From humble beginnings to agricultural innovation leaders</p>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <h3>The Beginning</h3>
+                    <p>FarmAI was founded in 2020 by a team of agricultural experts and data scientists who recognized the growing need for technology in farming.</p>
+                </div>
+                <div class="col-lg-6">
+                    <h3>Today & Future</h3>
+                    <p>Today, FarmAI serves over 5,000 farmers across 15 countries, helping them increase yields by an average of 35%.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Values Section -->
+    <section class="values-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Our Values</h2>
+                <p>The principles that guide everything we do</p>
+            </div>
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="value-card">
+                        <div class="value-icon"><i class="fas fa-hand-holding-heart"></i></div>
+                        <h4>Farmer First</h4>
+                        <p>Every feature we build is designed with farmers' real needs in mind.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="value-card">
+                        <div class="value-icon"><i class="fas fa-leaf"></i></div>
+                        <h4>Sustainability</h4>
+                        <p>We promote farming practices that protect the environment.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="value-card">
+                        <div class="value-icon"><i class="fas fa-rocket"></i></div>
+                        <h4>Innovation</h4>
+                        <p>We continuously research and implement the latest AI technologies.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Overview -->
+    <section class="team-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Our Services</h2>
+                <p>Comprehensive AI-powered solutions for modern farming</p>
+            </div>
+            <div class="row">
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="value-card">
+                        <div class="value-icon"><i class="fas fa-seedling"></i></div>
+                        <h4>Crop Recommendation</h4>
+                        <p>AI analyzes soil and weather data to recommend optimal crops.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="value-card">
+                        <div class="value-icon"><i class="fas fa-heartbeat"></i></div>
+                        <h4>Disease Detection</h4>
+                        <p>Upload images to identify diseases and get treatment recommendations.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="value-card">
+                        <div class="value-icon"><i class="fas fa-flask"></i></div>
+                        <h4>Fertilizer Advice</h4>
+                        <p>Get precise fertilizer recommendations based on soil tests.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats-section">
+        <div class="container">
+            <div class="row text-center">
+                <div class="col-md-3">
+                    <div class="stat-number">5,000+</div>
+                    <p>Happy Farmers</p>
+                </div>
+                <div class="col-md-3">
+                    <div class="stat-number">98%</div>
+                    <p>Accuracy Rate</p>
+                </div>
+                <div class="col-md-3">
+                    <div class="stat-number">35%</div>
+                    <p>Average Yield Increase</p>
+                </div>
+                <div class="col-md-3">
+                    <div class="stat-number">15</div>
+                    <p>Countries Served</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact">
+        <div class="footer-title-text">
+            <h1>CONTACT US</h1>
+        </div>
+        <div class="footer-row">
+            <div class="footer-left">
+                <h1>FarmAI</h1>
+                <p>Email: farmAI@gmail.com</p>
+            </div>
+            <div class="footer-right">
+                <h1>Follow Us</h1>
+                <p>Github: <a href="https://github.com/shekhar6264" target="_blank" style="color:#fff;"><i class="fab fa-github"></i> FarmAI</a></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Nav Active + Smooth Scroll + small accessibility niceties -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentPage = window.location.pathname;
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                // Accept both full path and anchor-based checks
+                if (link.getAttribute('href') === currentPage || (link.getAttribute('href') !== null && currentPage.endsWith(link.getAttribute('href')))) {
+                    link.classList.add('active');
+                }
+            });
+
+            // Smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth' });
+                    }
+                });
+            });
+        });
+    </script>
+
+    <!-- Google Translate Script -->
+    <script type="text/javascript">
+    function googleTranslateElementInit() {
+        new google.translate.TranslateElement({
+            pageLanguage: 'en',
+            includedLanguages: 'en,or,hi,bn,ta,te,ml,kn',
+            layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+        }, 'google_translate_element');
+    }
+
+    // Workaround to keep navbar look after translation (small tweak)
+    function removeGoogleTranslateBadge() {
+        // optional: hide the powered-by badge that Google inserts (not recommended for production if you rely on proper attribution)
+        const badge = document.querySelector('.goog-logo-link');
+        if (badge && badge.parentElement) {
+            badge.parentElement.style.display = 'none';
+        }
+    }
+
+    // Callback after the translate script loads
+    function onTranslateReady() {
+        // run any small fixes after translation applied
+        setTimeout(removeGoogleTranslateBadge, 1500);
+    }
+    </script>
+
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
 </body>
 </html>

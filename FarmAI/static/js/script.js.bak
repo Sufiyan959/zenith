@@ -1,0 +1,196 @@
+const searchBox = document.querySelector("#cityInput");
+const searchBtn = document.querySelector(".search-bar img");
+const weatherIcon = document.getElementById("weather-icon");
+const videoBackground = document.getElementById("background-video");
+
+async function checkWeather(city) {
+    try {
+        // Show loading state
+        searchBox.disabled = true;
+        searchBtn.style.opacity = '0.5';
+        document.getElementById('weather-content').style.display = 'none';
+
+        const response = await fetch('/weather-data', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ city })
+});
+
+        const data = await response.json();
+        
+        if(!response.ok) {
+            throw new Error(data.error || 'City not found');
+        }
+
+        // Update UI with weather data
+        document.getElementById('location').textContent = data.name;
+        document.getElementById('temperature').textContent = Math.round(data.main.temp);
+        document.getElementById('humidity').textContent = data.main.humidity + "%";
+        document.getElementById('wind-speed').textContent = data.wind.speed + " km/h";
+        document.getElementById('pressure').textContent = data.main.pressure + " hPa";
+        document.getElementById('description').textContent = data.weather[0].main;
+
+        const sunriseTime = new Date(data.sys.sunrise * 1000).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+        const sunsetTime = new Date(data.sys.sunset * 1000).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+        document.getElementById('sunrise').textContent = sunriseTime;
+        document.getElementById('sunset').textContent = sunsetTime;
+
+        // Update wind direction
+        document.getElementById('wind-direction').textContent = `${data.wind.deg}°`;
+        const windDirImage = document.querySelector('img[alt="Wind Direction"]');
+        if (windDirImage) {
+            windDirImage.style.transform = `rotate(${data.wind.deg}deg)`;
+        }
+
+        // Update rainfall
+        document.getElementById('rainfall').textContent = data.rain 
+            ? ((data.rain['1h'] || data.rain['3h']) + ' mm') 
+            : '0 mm';
+
+        // Show weather content
+        document.getElementById('weather-content').style.display = 'block';
+        
+        // Update weather display and fetch forecast
+        updateWeatherDisplay(data.weather[0].main);
+        getForecast(city);
+    } catch (error) {
+        console.error("Error fetching weather data:", error);
+    }
+}
+
+async function getForecast(city) {
+    try {
+        const response = await fetch('/forecast', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ city })
+        });
+        
+        if (!response.ok) {
+            throw new Error('Failed to fetch forecast data');
+        }
+
+        const data = await response.json();
+        const forecastContainer = document.getElementById('forecast');
+        forecastContainer.innerHTML = '';
+
+        // Display forecast data
+        data.daily.forEach(day => {
+            const date = new Date(day.dt * 1000);
+            const dayName = date.toLocaleDateString('en-US', { weekday: 'short' });
+
+            const fcItem = document.createElement('div');
+            fcItem.className = 'fc-item';
+            fcItem.innerHTML = `
+                <div class="fc-day">${dayName}</div>
+                <img src="static/images/${day.weather.main.toLowerCase()}.png" class="fc-icon" alt="${day.weather.description}">
+                <div class="fc-temps">
+                    <span class="fc-max">${Math.round(day.temp.max)}°</span>
+                    <span class="fc-min">${Math.round(day.temp.min)}°</span>
+                </div>
+            `;
+            forecastContainer.appendChild(fcItem);
+        });
+
+        document.querySelector('.forecast-section').style.display = 'block';
+    } catch (error) {
+        console.error('Forecast error:', error);
+        document.querySelector('.forecast-section').style.display = 'none';
+    }
+
+function processForecastData(forecastList) {
+    const dailyData = {};
+    
+    forecastList.forEach(item => {
+        const date = new Date(item.dt * 1000);
+        const day = date.toLocaleDateString('en-US', { weekday: 'short' });
+        
+        if (!dailyData[day]) {
+            dailyData[day] = {
+                maxTemp: item.main.temp_max,
+                minTemp: item.main.temp_min,
+                icon: item.weather[0].main,
+                rain: item.rain ? item.rain["3h"] : 0
+            };
+        } else {
+            dailyData[day].maxTemp = Math.max(dailyData[day].maxTemp, item.main.temp_max);
+            dailyData[day].minTemp = Math.min(dailyData[day].minTemp, item.main.temp_min);
+            dailyData[day].rain += item.rain ? item.rain["3h"] : 0;
+        }
+    });
+
+    return Object.entries(dailyData).slice(0, 7);
+}
+
+function displayForecast(dailyForecasts) {
+    const forecastContainer = document.querySelector(".forecast");
+    forecastContainer.innerHTML = "";
+    
+    dailyForecasts.forEach(([day, data]) => {
+        const fcItem = document.createElement("div");
+        fcItem.className = "fc-item";
+        
+        fcItem.innerHTML = `
+            <div class="fc-day">${day}</div>
+            <img src="static/images/${data.icon.toLowerCase()}.png" class="fc-icon">
+            <div class="fc-temps">
+                <span class="fc-max">${Math.round(data.maxTemp)}°</span>
+                <span class="fc-min">${Math.round(data.minTemp)}°</span>
+            </div>
+            ${data.rain > 0 ? `
+                <div class="fc-rain">
+                    <img src="static/images/rain-drop.png" width="8">
+                    ${Math.round(data.rain)}mm
+                </div>
+            ` : ''}
+        `;
+        
+        forecastContainer.appendChild(fcItem);
+    });
+}
+
+function updateWeatherDisplay(weatherCondition) {
+    const condition = weatherCondition.toLowerCase();
+    const videoMap = {
+        'clear': 'video1',
+        'clouds': 'video2',
+        'rain': 'video3',
+        'drizzle': 'video3',
+        'snow': 'video4',
+        'mist': 'video5',
+        'haze': 'video5',
+        'fog': 'video5'
+    };
+
+    weatherIcon.src = `static/images/${condition}.png`;
+    const videoNumber = videoMap[condition] || 'video1';
+    const videoSource = videoBackground.querySelector('source');
+    if (videoSource) {
+        videoSource.src = `static/videos/${videoNumber}.mp4`;
+        videoBackground.load();
+        videoBackground.play().catch(err => console.warn('Video autoplay failed:', err));
+    }
+}
+
+// Event listeners
+searchBtn.addEventListener('click', () => {
+    const city = searchBox.value.trim();
+    if (city) {
+        checkWeather(city);
+    }
+});
+
+searchBox.addEventListener('keypress', (event) => {
+    if (event.key === 'Enter') {
+        const city = searchBox.value.trim();
+        if (city) {
+            checkWeather(city);
+        }
+    }
+});
+
+// Load default city on page load
+document.addEventListener('DOMContentLoaded', () => {
+    searchBox.value = 'Jammu';
+    checkWeather('Jammu');
+});

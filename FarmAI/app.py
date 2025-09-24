@@ -1,11 +1,15 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request,jsonify
 import os
 import joblib
 import pandas as pd
+import requests
+from dotenv import load_dotenv
 
 # ----------------- Flask Initialization -----------------
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.urandom(24)
+load_dotenv()
+WEATHER_API_KEY = os.getenv('WEATHER_API_KEY')
 
 # ----------------- Paths -----------------
 BASE_DIR = os.path.dirname(os.path.realpath(__file__))
@@ -124,34 +128,56 @@ def community_forum():
         {"user": "Farmer C", "topic": "Rainwater harvesting methods", "replies": 7},
     ]
     return render_template('community_forum.html', posts=posts)
-
-import requests
-
 @app.route('/weather')
-def weather():
-    # Example: Hyderabad
-    city = "Hyderabad"
-    api_key = "YOUR_OPENWEATHERMAP_API_KEY"  # <-- Replace with your key
+def weather_page():
+    # Render the current weather page
+    return render_template('weather.html')
 
-    url = f"http://api.openweathermap.org/data/2.5/forecast?q={city}&appid={api_key}&units=metric"
-    response = requests.get(url)
-    data = response.json()
 
-    if data.get("cod") != "200":
-        return render_template('weather.html', city=city, forecast=[])
+@app.route('/weather-data', methods=['POST'])
+def weather_data():
+    try:
+        data = request.get_json()
+        city = data.get('city')
+        if not city:
+            return jsonify({'error': 'City name is required'}), 400
 
-    # Extract forecast for next 5 days (every 8th record = ~1 per day)
-    forecast_data = []
-    for i in range(0, len(data["list"]), 8):
-        day = data["list"][i]
-        forecast_data.append({
-            "date": day["dt_txt"].split(" ")[0],
-            "temp": day["main"]["temp"],
-            "desc": day["weather"][0]["description"].title(),
-            "icon": day["weather"][0]["icon"]
-        })
+        if not WEATHER_API_KEY:
+            return jsonify({'error': 'Weather API key not configured on server'}), 500
 
-    return render_template("weather.html", city=city, forecast=forecast_data)
+        # Fetch current weather from OpenWeatherMap
+        url = f'https://api.openweathermap.org/data/2.5/weather?q={city}&appid={WEATHER_API_KEY}&units=metric'
+        response = requests.get(url, timeout=10)
+        weather_data = response.json()
+
+        if response.status_code != 200:
+            return jsonify({'error': weather_data.get('message', 'Failed to fetch weather data')}), response.status_code
+
+        # Extract only the needed fields for your HTML
+        result = {
+            "name": weather_data.get("name"),
+            "main": {
+                "temp": weather_data.get("main", {}).get("temp"),
+                "humidity": weather_data.get("main", {}).get("humidity"),
+                "pressure": weather_data.get("main", {}).get("pressure")
+            },
+            "wind": {
+                "speed": weather_data.get("wind", {}).get("speed"),
+                "deg": weather_data.get("wind", {}).get("deg")
+            },
+            "weather": weather_data.get("weather", [{}])[0],
+            "sys": {
+                "sunrise": weather_data.get("sys", {}).get("sunrise"),
+                "sunset": weather_data.get("sys", {}).get("sunset")
+            },
+            "rain": weather_data.get("rain")
+        }
+
+        return jsonify(result)
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
 
 
 @app.route('/forgot-password', methods=['GET', 'POST'])
